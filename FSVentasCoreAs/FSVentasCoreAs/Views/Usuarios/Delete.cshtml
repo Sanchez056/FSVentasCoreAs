@@ -1,0 +1,41 @@
+@model FSVentasCoreAs.Models.Usuarios
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Usuarios</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="UsuarioId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombres)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Contraseña)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Contraseña)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoUsuarios)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TipoUsuarios.Nombre)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
+</div>

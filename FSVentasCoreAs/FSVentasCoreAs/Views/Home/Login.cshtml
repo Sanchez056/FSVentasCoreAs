@@ -1,0 +1,36 @@
+@model FSVentasCoreAs.Models.Usuarios
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+<h2>Login</h2>
+
+<form class="form-horizontal" asp-controller="Home" asp-action="Login" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="Nombres" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Nombres" class="form-control" />
+            <span asp-validation-for="Nombres" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="Contraseña" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <input asp-for="Contraseña" class="form-control" />
+            <span asp-validation-for="Contraseña" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label asp-for="TipoId" class="col-md-2 control-label"></label>
+        <div class="col-md-10">
+            <select asp-for="TipoId" class="form-control" asp-items="ViewBag.TipoId"></select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button type="submit" class="btn btn-default">Login</button>
+        </div>
+    </div>
+</form>
