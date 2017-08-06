@@ -22,10 +22,10 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Articulos
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var fSVentasCoreDb = _context.Articulos.Include(a => a.CategoriasArticulos).Include(a => a.MarcasArticulos).Include(a => a.Proveedores);
-            return View(await fSVentasCoreDb.ToListAsync());
+           var fSVentasCoreDb = _context.Articulos.Include(a => a.CategoriasArticulos).Include(a => a.MarcasArticulos).Include(a => a.Proveedores);
+            return View(BLL.ArticulosBLL.GetLista());
         }
 
         // GET: Articulos/Details/5
@@ -112,7 +112,7 @@ namespace FSVentasCoreAs.Controllers
             {
                 try
                 {
-                    _context.Update(articulos);
+                    BLL.ArticulosBLL.Insertar(articulos);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace FSVentasCoreAs.BLL
 {
-    public class ClientesBLL
+    public class EmpleadosBLL
     {
-        public static bool Insertar(Clientes a)
+        public static bool Insertar(Empleados e)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    var p = Buscar(a.ClienteId);
+                    var p = Buscar(e.Empleadod);
                     if (p == null)
-                        db.Clientes.Add(a);
+                        db.Empleados.Add(e);
                     else
-                        db.Entry(a).State = EntityState.Modified;
+                        db.Entry(e).State = EntityState.Modified;
                     db.SaveChanges();
                     resultado = true;
                 }
@@ -33,7 +33,7 @@ namespace FSVentasCoreAs.BLL
             }
             return resultado;
         }
-        public static bool Eliminar(Clientes nuevo)
+        public static bool Eliminar(Empleados nuevo)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
@@ -52,14 +52,14 @@ namespace FSVentasCoreAs.BLL
             }
             return resultado;
         }
-        public static Clientes Buscar(int? clienteId)
+        public static Empleados Buscar(int? empleadoId)
         {
-            Clientes cliente = null;
+            Empleados empleado = null;
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    cliente = db.Clientes.Find(clienteId);
+                    empleado = db.Empleados.Find(empleadoId);
                 }
                 catch (Exception)
                 {
@@ -67,16 +67,16 @@ namespace FSVentasCoreAs.BLL
                     throw;
                 }
             }
-            return cliente;
+            return empleado;
         }
-        public static List<Clientes> GetLista()
+        public static List<Empleados> GetLista()
         {
-            var lista = new List<Clientes>();
+            var lista = new List<Empleados>();
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    lista = db.Clientes.ToList();
+                    lista = db.Empleados.ToList();
                 }
                 catch (Exception)
                 {
@@ -87,14 +87,14 @@ namespace FSVentasCoreAs.BLL
             return lista;
 
         }
-        public static List<Clientes> GetListaId(int Id)
+        public static List<Empleados> GetListaId(int Id)
         {
-            List<Clientes> list = new List<Clientes>();
+            List<Empleados> list = new List<Empleados>();
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    list = db.Clientes.Where(p => p.ClienteId == Id).ToList();
+                    list = db.Empleados.Where(p => p.Empleadod == Id).ToList();
                 }
                 catch (Exception)
                 {
@@ -115,7 +115,6 @@ namespace FSVentasCoreAs.BLL
             return lista;
 
         }
-
 
     }
 }

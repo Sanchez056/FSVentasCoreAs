@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Net.Http;
+using Rotativa;
+using Syncfusion.JavaScript;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -19,6 +22,7 @@ namespace FSVentasCoreAs.Controllers
         {
           return View();
         }
+      
 
         public IActionResult About()
         {

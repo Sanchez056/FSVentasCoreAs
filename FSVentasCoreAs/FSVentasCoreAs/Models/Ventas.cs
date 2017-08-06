@@ -10,20 +10,10 @@ namespace FSVentasCoreAs.Models
     {
         [Key]
         public int VentaId { get; set; }
-        [Required]
-        public int ArticuloId { get; set; }
-        [Required]
-        public string articulo { get; set; }
-        [Required]
-        public int Cantidad { get; set; }
-        [Required]
+        public int ClienteId { get; set; }
+        public string Clientes { get; set; }
         public DateTime Fecha { get; set; }
-        [Required]
-        public decimal Total { get; set; }
-
-        public Ventas()
-        {
-
-        }
+        public double Total { get; set; }
+        public string Empleado { get; set; }
     }
 }

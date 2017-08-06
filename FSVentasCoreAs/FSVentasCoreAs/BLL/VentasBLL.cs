@@ -3,6 +3,7 @@ using FSVentasCoreAs.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,20 +11,19 @@ namespace FSVentasCoreAs.BLL
 {
     public class VentasBLL
     {
-        public static bool Insertar(Ventas a)
+        
+        public static bool Guardar(Clases venta)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    var p = Buscar(a.VentaId);
-                    if (p == null)
-                        db.Ventas.Add(a);
-                    else
-                        db.Entry(a).State = EntityState.Modified;
-                    db.SaveChanges();
-                    resultado = true;
+                    db.Ventas.Add(venta.Encabezado);
+                    if (db.SaveChanges() > 0)
+                    {
+                        resultado = BLL.VentasDetallesBLL.Guardar(venta.Detalle);
+                    }
                 }
                 catch (Exception)
                 {
@@ -33,16 +33,122 @@ namespace FSVentasCoreAs.BLL
             }
             return resultado;
         }
-        public static bool Eliminar(Ventas nuevo)
+        
+
+        public static Ventas BuscarEncabezado(int?ventaId)
+        {
+            Ventas factura = null;
+            using (var db = new FSVentasCoreDb())
+            {
+                try
+                {
+                    factura = db.Ventas.Find(ventaId);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return factura;
+        }
+        public static Ventas Buscar(int Id)
+        {
+            Ventas ID = null;
+            using (var db = new FSVentasCoreDb())
+            {
+                try
+                {
+                    ID = db.Ventas.Find(Id);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return ID;
+        }
+        public static Clases Buscarr(int? facturaId)
+        {
+            Clases venta = null;
+            using (var db = new FSVentasCoreDb())
+            {
+                try
+                {
+                    venta = new Clases()
+                    {
+                        Encabezado = db.Ventas.Find(facturaId)
+                    };
+                    if (venta.Encabezado != null)
+                    {
+                        venta.Detalle = BLL.VentasDetallesBLL.Listar(venta.Encabezado.VentaId);
+                    }
+                    else
+                    {
+                        venta = null;
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return venta;
+        }
+        public static bool Modificar(Clases venta)
         {
             bool resultado = false;
+            using (var db = new FSVentasCoreDb())
+            {
+                try
+                {
+                    db.Entry(venta.Encabezado).State = EntityState.Modified;
+
+                    if (db.SaveChanges() > 0)
+                    {
+                        resultado = BLL.VentasDetallesBLL.Modificar(venta.Detalle, venta.Encabezado.VentaId);
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return resultado;
+        }
+        public static bool Eliminar(Clases venta)
+        {
+            bool resultado = false;
+            using (var db = new FSVentasCoreDb())
+            {
+                try
+                {
+                    venta = VentasBLL.Buscarr(venta.Encabezado.VentaId);
+                    VentasBLL.Eliminar(venta.Encabezado);
+                    VentasDetallesBLL.Eliminar(venta.Detalle);
+
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+            return resultado;
+        }
+
+        public static bool Eliminar(Ventas nuevo)
+        {
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
                     db.Entry(nuevo).State = EntityState.Deleted;
-                    db.SaveChanges();
-                    resultado = true;
+                    if (db.SaveChanges() > 0)
+                        return true;
                 }
                 catch (Exception)
                 {
@@ -50,16 +156,16 @@ namespace FSVentasCoreAs.BLL
                     throw;
                 }
             }
-            return resultado;
+            return false;
         }
-        public static Ventas Buscar(int Id)
+        public static List<Ventas> Listar()
         {
-            var c = new Ventas();
+            List<Ventas> listado = null;
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    c = db.Ventas.Find(Id);
+                    listado = db.Ventas.ToList();
                 }
                 catch (Exception)
                 {
@@ -67,53 +173,8 @@ namespace FSVentasCoreAs.BLL
                     throw;
                 }
             }
-            return c;
+            return listado;
         }
-        public static List<Ventas> GetLista()
-        {
-            var lista = new List<Ventas>();
-            using (var db = new FSVentasCoreDb())
-            {
-                try
-                {
-                    lista = db.Ventas.ToList();
-                }
-                catch (Exception)
-                {
 
-                    throw;
-                }
-            }
-            return lista;
-
-        }
-        public static List<Ventas> GetListaId(int Id)
-        {
-            List<Ventas> list = new List<Ventas>();
-            using (var db = new FSVentasCoreDb())
-            {
-                try
-                {
-                    list = db.Ventas.Where(p => p.VentaId == Id).ToList();
-                }
-                catch (Exception)
-                {
-
-                    throw;
-                }
-            }
-            return list;
-        }
-        public static List<Ventas> GetListaFecha(DateTime Desde, DateTime Hasta)
-        {
-            List<Ventas> lista = new List<Ventas>();
-
-            var db = new FSVentasCoreDb();
-
-            lista = db.Ventas.Where(p => p.Fecha >= Desde && p.Fecha <= Hasta).ToList();
-
-            return lista;
-
-        }
     }
 }

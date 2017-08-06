@@ -7,41 +7,31 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
-using Rotativa;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using System.Net;
 
 namespace FSVentasCoreAs.Controllers
 {
-    [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
-    public class UsuariosController : Controller
+    public class VentasDetallesController : Controller
     {
         private readonly FSVentasCoreDb _context;
-        private FSVentasCoreDb db = new FSVentasCoreDb();
-        public UsuariosController(FSVentasCoreDb context)
+
+        public VentasDetallesController(FSVentasCoreDb context)
         {
-            _context = context;
-        }
-        public JsonResult UsuarioDisponible(string Nombre)
-        {
-            return Json(Nombre);
+            _context = context;    
         }
 
-
-    
-
-        // GET: Usuarios
+        // GET: VentasDetalles
         public async Task<IActionResult> Index()
         {
-            var fSVentasCoreDb = _context.Usuarios.Include(u => u.TipoUsuarios);
-            return View(await fSVentasCoreDb.ToListAsync());
+            return View(await _context.VentasDetalles.ToListAsync());
         }
-        
+        [HttpGet]
+        public JsonResult BuscarF(int ventaId)
+        {
+            var venta = BLL.VentasDetallesBLL.Listar(ventaId);
+            return Json(venta);
+        }
 
-
-        // GET: Usuarios/Details/5
+        // GET: VentasDetalles/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -49,43 +39,39 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
-                .Include(u => u.TipoUsuarios)
-                .SingleOrDefaultAsync(m => m.UsuarioId == id);
-            if (usuarios == null)
+            var ventasDetalles = await _context.VentasDetalles
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (ventasDetalles == null)
             {
                 return NotFound();
             }
 
-           return View(usuarios);
+            return View(ventasDetalles);
         }
 
-
-        // GET: Usuarios/Create
+        // GET: VentasDetalles/Create
         public IActionResult Create()
         {
-            ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre");
             return View();
         }
 
-        // POST: Usuarios/Create
+        // POST: VentasDetalles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
+        public async Task<IActionResult> Create([Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(usuarios);
+                _context.Add(ventasDetalles);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre", usuarios.TipoId);
-            return View(usuarios);
+            return View(ventasDetalles);
         }
 
-        // GET: Usuarios/Edit/5
+        // GET: VentasDetalles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -93,23 +79,22 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios.SingleOrDefaultAsync(m => m.UsuarioId == id);
-            if (usuarios == null)
+            var ventasDetalles = await _context.VentasDetalles.SingleOrDefaultAsync(m => m.Id == id);
+            if (ventasDetalles == null)
             {
                 return NotFound();
             }
-            ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre", usuarios.TipoId);
-            return View(usuarios);
+            return View(ventasDetalles);
         }
 
-        // POST: Usuarios/Edit/5
+        // POST: VentasDetalles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
         {
-            if (id != usuarios.UsuarioId)
+            if (id != ventasDetalles.Id)
             {
                 return NotFound();
             }
@@ -118,12 +103,12 @@ namespace FSVentasCoreAs.Controllers
             {
                 try
                 {
-                    _context.Update(usuarios);
+                    _context.Update(ventasDetalles);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UsuariosExists(usuarios.UsuarioId))
+                    if (!VentasDetallesExists(ventasDetalles.Id))
                     {
                         return NotFound();
                     }
@@ -134,11 +119,10 @@ namespace FSVentasCoreAs.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre", usuarios.TipoId);
-            return View(usuarios);
+            return View(ventasDetalles);
         }
 
-        // GET: Usuarios/Delete/5
+        // GET: VentasDetalles/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -146,31 +130,30 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
 
-            var usuarios = await _context.Usuarios
-                .Include(u => u.TipoUsuarios)
-                .SingleOrDefaultAsync(m => m.UsuarioId == id);
-            if (usuarios == null)
+            var ventasDetalles = await _context.VentasDetalles
+                .SingleOrDefaultAsync(m => m.Id == id);
+            if (ventasDetalles == null)
             {
                 return NotFound();
             }
 
-            return View(usuarios);
+            return View(ventasDetalles);
         }
 
-        // POST: Usuarios/Delete/5
+        // POST: VentasDetalles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var usuarios = await _context.Usuarios.SingleOrDefaultAsync(m => m.UsuarioId == id);
-            _context.Usuarios.Remove(usuarios);
+            var ventasDetalles = await _context.VentasDetalles.SingleOrDefaultAsync(m => m.Id == id);
+            _context.VentasDetalles.Remove(ventasDetalles);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool UsuariosExists(int id)
+        private bool VentasDetallesExists(int id)
         {
-            return _context.Usuarios.Any(e => e.UsuarioId == id);
+            return _context.VentasDetalles.Any(e => e.Id == id);
         }
     }
 }

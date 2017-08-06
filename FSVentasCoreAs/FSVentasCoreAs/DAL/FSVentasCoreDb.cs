@@ -22,6 +22,7 @@ namespace FSVentasCoreAs.DAL
         public DbSet<Usuarios> Usuarios { get; set; }
         public DbSet<TipoUsuarios> TipoUsuarios { get; set; }
         public DbSet<Clientes> Clientes { get; set; }
+        public DbSet<Empleados> Empleados { get; set; }
         public DbSet<Proveedores> Proveedores { get; set; }
         public DbSet<CategoriasArticulos> CategoriasArticulos { get; set; }
         public DbSet<MarcasArticulos> MarcasArticulos { get; set; }
@@ -32,5 +33,6 @@ namespace FSVentasCoreAs.DAL
         public DbSet<Sectores> Sectores { get; set; }
         public DbSet<Ventas> Ventas { get; set; }
         public DbSet<VentasDetalles> VentasDetalles { get; set; }
+
     }
 }

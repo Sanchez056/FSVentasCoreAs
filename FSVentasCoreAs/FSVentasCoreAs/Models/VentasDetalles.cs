@@ -10,18 +10,12 @@ namespace FSVentasCoreAs.Models
     {
         [Key]
         public int Id { get; set; }
-
         public int VentaId { get; set; }
-
-        public string ArticuloId { get; set; }
-
-        public decimal Precio { get; set; }
-
+        public int ArticuloId { get; set; }
+        public string Articulos { get; set; }
         public int Cantidad { get; set; }
-
-        public VentasDetalles()
-        {
-
-        }
+        public decimal Precio { get; set; }
+        public double Descuento { get; set; }
+        public decimal SubTotal { get; set; }
     }
 }

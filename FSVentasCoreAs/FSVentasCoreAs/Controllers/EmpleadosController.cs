@@ -9,29 +9,28 @@ using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
 using Microsoft.AspNetCore.Authorization;
 using FSVentasCoreAs.Models.Dirreciones;
-using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
     [Authorize(ActiveAuthenticationSchemes = "CookiePolicy")]
-    public class ClientesController : Controller
+    public class EmpleadosController : Controller
     {
         private readonly FSVentasCoreDb _context;
         private FSVentasCoreDb db = new FSVentasCoreDb();
 
-        public ClientesController(FSVentasCoreDb context)
+        public EmpleadosController(FSVentasCoreDb context)
         {
             _context = context;    
         }
 
-        // GET: Clientes
+        // GET: Empleados
         public async Task<IActionResult> Index()
         {
-            var fSVentasCoreDb = _context.Clientes.Include(c => c.DistritosMunicipales).Include(c => c.Municipios).Include(c => c.Provincias).Include(c => c.Sectores);
+            var fSVentasCoreDb = _context.Empleados.Include(e => e.DistritosMunicipales).Include(e => e.Municipios).Include(e => e.Provincias).Include(e => e.Sectores);
             return View(await fSVentasCoreDb.ToListAsync());
         }
-      
-        // GET: Clientes/Details/5
+
+        // GET: Empleados/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -39,21 +38,21 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
 
-            var clientes = await _context.Clientes
-                .Include(c => c.DistritosMunicipales)
-                .Include(c => c.Municipios)
-                .Include(c => c.Provincias)
-                .Include(c => c.Sectores)
-                .SingleOrDefaultAsync(m => m.ClienteId == id);
-            if (clientes == null)
+            var empleados = await _context.Empleados
+                .Include(e => e.DistritosMunicipales)
+                .Include(e => e.Municipios)
+                .Include(e => e.Provincias)
+                .Include(e => e.Sectores)
+                .SingleOrDefaultAsync(m => m.Empleadod == id);
+            if (empleados == null)
             {
                 return NotFound();
             }
 
-            return View(clientes);
+            return View(empleados);
         }
 
-        // GET: Clientes/Create
+        // GET: Empleados/Create
         public IActionResult Create()
         {
             List<Provincias> lstProvincia = db.Provincias.ToList();
@@ -65,29 +64,47 @@ namespace FSVentasCoreAs.Controllers
             ViewBag.DistritoId = new SelectList(lstDistrito, "DistritoId", "Nombre");
             List<Sectores> lstSectores = db.Sectores.ToList();
             ViewBag.SectorId = new SelectList(lstSectores, "SectorId", "Nombre");
-
-
             return View();
         }
 
-        // POST: Clientes/Create
+        // POST: Empleados/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Clientes clientes)
+        public async Task<IActionResult> Create([Bind("Empleadod,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Empleados empleados)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(clientes);
+                _context.Add(empleados);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
-            return View(clientes);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", empleados.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", empleados.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", empleados.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", empleados.SectorId);
+            return View(empleados);
+        }
+
+        // GET: Empleados/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var empleados = await _context.Empleados.SingleOrDefaultAsync(m => m.Empleadod == id);
+            if (empleados == null)
+            {
+                return NotFound();
+            }
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", empleados.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", empleados.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", empleados.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", empleados.SectorId);
+            return View(empleados);
         }
         [HttpGet]
         public JsonResult Lista(int? id)
@@ -169,34 +186,15 @@ namespace FSVentasCoreAs.Controllers
 
         }
 
-        // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
 
-            var clientes = await _context.Clientes.SingleOrDefaultAsync(m => m.ClienteId == id);
-            if (clientes == null)
-            {
-                return NotFound();
-            }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
-            return View(clientes);
-        }
-
-        // POST: Clientes/Edit/5
+        // POST: Empleados/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ClienteId,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Clientes clientes)
+        public async Task<IActionResult> Edit(int id, [Bind("Empleadod,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Empleados empleados)
         {
-            if (id != clientes.ClienteId)
+            if (id != empleados.Empleadod)
             {
                 return NotFound();
             }
@@ -205,12 +203,12 @@ namespace FSVentasCoreAs.Controllers
             {
                 try
                 {
-                    _context.Update(clientes);
+                    _context.Update(empleados);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ClientesExists(clientes.ClienteId))
+                    if (!EmpleadosExists(empleados.Empleadod))
                     {
                         return NotFound();
                     }
@@ -221,14 +219,14 @@ namespace FSVentasCoreAs.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
-            return View(clientes);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", empleados.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", empleados.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", empleados.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", empleados.SectorId);
+            return View(empleados);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: Empleados/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -236,34 +234,34 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
 
-            var clientes = await _context.Clientes
-                .Include(c => c.DistritosMunicipales)
-                .Include(c => c.Municipios)
-                .Include(c => c.Provincias)
-                .Include(c => c.Sectores)
-                .SingleOrDefaultAsync(m => m.ClienteId == id);
-            if (clientes == null)
+            var empleados = await _context.Empleados
+                .Include(e => e.DistritosMunicipales)
+                .Include(e => e.Municipios)
+                .Include(e => e.Provincias)
+                .Include(e => e.Sectores)
+                .SingleOrDefaultAsync(m => m.Empleadod == id);
+            if (empleados == null)
             {
                 return NotFound();
             }
 
-            return View(clientes);
+            return View(empleados);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: Empleados/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var clientes = await _context.Clientes.SingleOrDefaultAsync(m => m.ClienteId == id);
-            _context.Clientes.Remove(clientes);
+            var empleados = await _context.Empleados.SingleOrDefaultAsync(m => m.Empleadod == id);
+            _context.Empleados.Remove(empleados);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool ClientesExists(int id)
+        private bool EmpleadosExists(int id)
         {
-            return _context.Clientes.Any(e => e.ClienteId == id);
+            return _context.Empleados.Any(e => e.Empleadod == id);
         }
     }
 }

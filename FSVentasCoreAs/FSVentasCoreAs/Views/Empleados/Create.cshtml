@@ -1,0 +1,189 @@
+@model FSVentasCoreAs.Models.Empleados
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+        $(function () {
+            if ($("#ProvinciaId").val() == '0') {
+                var MunicipiosDefaultValue = "<option value='0'>--Seleccionar a Municipios --</option>";
+                $("#MunicipioId").html(MunicipiosDefaultValue).show();
+
+            }
+            $(function () {
+                if ($("#MunicipioId").val() == '0') {
+                    var DistritoDefaultValue = "<option value='0'>--Seleccionar Distrito Municipal --</option>";
+                    $("#DistritoId").html(DistritoDefaultValue).show();
+
+                }
+                $(function () {
+                    if ($("#DistritoId").val() == '0') {
+                        var ParajeDefaultValue = "<option value='0'>--Selecionar su Paraje--</option>";
+                        $("#ParajeId").html(ParajeDefaultValue).show();
+
+                    }
+
+             $("#ProvinciaId").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlMunicipios = $("#MunicipioId");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetMunicipiosByProvinciaId", "Empleados")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlMunicipios.html('');
+                    $.each(data, function (id, option) {
+                        ddlMunicipios.append($('<option></option>').val(option.municipioId).html(option.nombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Municipios!.');
+                }
+            });
+        });
+        });
+         $("#MunicipioId").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlDistrito = $("#DistritoId");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetdistritoIdByMunicipioId", "Empleados")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlDistrito.html('');
+                    $.each(data, function (id, option) {
+                        ddlDistrito.append($('<option></option>').val(option.distritoId).html(option.nombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Ciudad!.');
+                }
+            });
+        });
+            });
+             $("#DistritoId").change(function () {
+            var selectedItemValue = $(this).val();
+
+            var ddlSectores = $("#SectorId");
+            $.ajax({
+                cache: false,
+                type: "GET",
+                url: '@Url.Action("GetSectoresIdByDistritoId", "Empleados")',
+                data: { "id": selectedItemValue },
+                success: function (data) {
+                    ddlSectores.html('');
+                    $.each(data, function (id, option) {
+                        ddlSectores.append($('<option></option>').val(option.sectorId).html(option.nombre));
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('Found error to load Paraje!.');
+                }
+            });
+        });
+    });
+    </script>
+    <div class="form-horizontal">
+        <h4>Empleados</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Nombre" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Sexo" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Sexo" class="form-control" />
+                <span asp-validation-for="Sexo" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Cedula" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Cedula" class="form-control" />
+                <span asp-validation-for="Cedula" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProvinciaId, "ProvinciaId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ProvinciaId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ProvinciaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MunicipioId, "MunicipioId", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("MunicipioId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.MunicipioId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.DistritoId, "Distrito Municipales", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("DistritoId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DistritoId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.SectorId, "Sector", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("SectorId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SectorId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Direccion" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Telefono" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Celular" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Celular" class="form-control" />
+                <span asp-validation-for="Celular" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fecha" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
