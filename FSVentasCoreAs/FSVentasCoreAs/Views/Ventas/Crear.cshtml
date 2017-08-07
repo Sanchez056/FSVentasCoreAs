@@ -92,15 +92,13 @@
         <div class="form-group text-center col-xl-12">
             <div class="col-md-offset-2 col-md-10">
                 <button type="button" class="btn btn-danger col-sm-2" id="btnLimpiar" onclick="LimpiarCampos(0)">Nuevo</button>
-                <button type="button" class="btn btn-primary  col-sm-2" id="btnCrear" onclick=" ValidarFactura();">Crear</button>
-                <button type="button" class="btn btn-info col-sm-2" id="btnModificar" onclick="ArmarFactura(1)">Modificar</button>
-                <button type="button" class="btn btn-warning col-sm-2" id="btnEliminar" onclick="ArmarFactura(2)">Eliminar</button>
+                <button type="button" class="btn btn-primary  col-sm-2" id="btnCrear" onclick=" ValidarVentas();">Crear</button>
+                <button type="button" class="btn btn-info col-sm-2" id="btnModificar" onclick="ArmarVentas(1)">Modificar</button>
+                <button type="button" class="btn btn-primary col-sm-2" id="btnEliminar" onclick="ArmarVentas(2)">Eliminar</button>
             </div>
         </div>
     </div>
-    <div>
-        <a asp-action="Index">Reporte</a>
-    </div>
+   
 
 
 }
@@ -280,7 +278,7 @@
                 });
             }
             //////////Guardar Factura/////////////////////////////////
-            function ValidarFactura() {
+            function ValidarVentas() {
                 var valid = true;
                 allFields.removeClass("ui-state-error");
                 updateTips("Todos los campos son obligatorios");
@@ -299,6 +297,7 @@
             function Crear() {
                 var ClienteListId = $('#ClienteList').find('option:selected').attr('id');
                 var ClienteList = $('#ClienteList').find('option:selected');
+                var EmpleadoListId = $('#EmpleadoList').find('option:selected').attr('id');
                 var EmpleadoList = $('#EmpleadoList').find('option:selected');
                 var Id = $('#tbId').val();
                 var total = $('#tbTotal').val();
@@ -331,7 +330,6 @@
                         }
                     });
             };
-            ///////////Metodos/////////////////////////////////////////
             function Buscar() {
                 Contenido.length = 0;var id = $('#tbId').val();
                 $.getJSON("/CargarVentas/Buscar",{ VentaId: id }, function (fac) {
@@ -368,7 +366,7 @@
                         }
                     });
             }
-            function ArmarFactura(motivo) {
+            function ArmarVentas(motivo) {
                 var Id = $('#tbId').val();
                 var ClienteListId = $('#ClienteList').find('option:selected').attr('id');
                 var ClienteList = $('#ClienteList').find('option:selected');
@@ -381,7 +379,7 @@
                     VentaId: Id,
                     ClienteId: ClienteListId,
                     Clientes: ClienteList.text(),
-                    Empleado: EmpleadoList.text(),
+                    Empleados: EmpleadoList.text(),
                     Fecha: fecha,
                     Total: total
                 }
@@ -391,14 +389,14 @@
                 }
 
                 if (motivo == 1) {
-                    ModificarFactura(EncabezadoDetalle);
+                    ModificarVentas(EncabezadoDetalle);
                 }
                 else if (motivo == 2) {
 
-                    EliminarFactura(EncabezadoDetalle);
+                    EliminarVentas(EncabezadoDetalle);
                 }
             }
-            function ModificarFactura(EncabezadoDetalle) {
+            function ModificarVentas(EncabezadoDetalle) {
                 console.log(EncabezadoDetalle);
                 $.ajax({
                     method: "POST",
@@ -419,7 +417,7 @@
                     }
                 });
             }
-            function EliminarFactura(EncabezadoDetalle) {
+            function EliminarVentas(EncabezadoDetalle) {
                 $.ajax({
                     method: "POST",
                     url: "/Ventas/Eliminar",

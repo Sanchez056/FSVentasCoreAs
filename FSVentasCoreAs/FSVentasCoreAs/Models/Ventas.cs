@@ -14,6 +14,7 @@ namespace FSVentasCoreAs.Models
         public string Clientes { get; set; }
         public DateTime Fecha { get; set; }
         public decimal Total { get; set; }
-        public string Empleado { get; set; }
+        public int EmpleadoId { get; set; }
+        public string Empleados { get; set; }
     }
 }
