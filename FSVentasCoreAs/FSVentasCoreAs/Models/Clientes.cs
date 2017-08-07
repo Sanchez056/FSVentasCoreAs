@@ -15,6 +15,7 @@ namespace FSVentasCoreAs.Models
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
         [Display(Name = "Su Nombre")]
+        [StringLength(50,ErrorMessage = "Una Longitud de 50 ")]
         public string Nombre { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
@@ -23,6 +24,7 @@ namespace FSVentasCoreAs.Models
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
         [Display(Name = "Su Numero de Cedula")]
+        [StringLength(13, ErrorMessage = "Una Longitud de 50 ")]
         public string Cedula { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
@@ -55,6 +57,7 @@ namespace FSVentasCoreAs.Models
         public string Telefono { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         [Display(Name = "su Numero  de Celular")]
+        [Range(0, 100)]
         public string Celular { get; set; }
         [Required]
         [DataType(DataType.Date)]
