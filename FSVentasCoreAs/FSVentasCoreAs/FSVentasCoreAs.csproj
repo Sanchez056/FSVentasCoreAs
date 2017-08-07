@@ -231,8 +231,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Nuevo\" />
-  </ItemGroup>
-
 </Project>
