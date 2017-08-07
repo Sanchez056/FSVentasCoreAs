@@ -11,7 +11,7 @@ namespace FSVentasCoreAs.Models
         [Key]
         public int TipoId { get; set; }
         [Required(ErrorMessage = "Es Requerido")]
-        [Display(Name = "Introducir el Nombre de Tipo de Usuarios")]
+        [Display(Name = " Tipo de Usuarios")]
         public string Nombre { get; set; }
     }
 }

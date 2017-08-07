@@ -16,7 +16,7 @@ namespace FSVentasCoreAs.Models
         [Display(Name = "Su Nombre Completo")]
         public string Nombre { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
-        [Display(Name = "la Marca de Articulo")]
+        [Display(Name = "Marca  Articulo")]
         [ForeignKey("MarcasArticulos")]
         public int MarcaId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]

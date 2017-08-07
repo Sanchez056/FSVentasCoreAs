@@ -88,7 +88,7 @@ namespace FSVentasCoreAs.Controllers
             {
                 _context.Add(usuarios);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre", usuarios.TipoId);
             return View(usuarios);

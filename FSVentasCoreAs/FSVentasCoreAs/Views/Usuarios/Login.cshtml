@@ -1,17 +1,17 @@
 @model FSVentasCoreAs.Models.Usuarios
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "InicioSeccion";
 }
 
-<h2>Login</h2>
-<form class="form-horizontal" asp-controller="Usuarios" asp-action="Login" method="post">
+<h2>InicioSeccion</h2>
+<form class="form-horizontal" asp-controller="Usuarios" asp-action="InicioSeccion" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
-        <label asp-for="Nombre" class="col-md-2 control-label"></label>
+        <label asp-for="Nombres" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <input asp-for="Nombre" class="form-control" />
-            <span asp-validation-for="Nombre" class="text-danger"></span>
+            <input asp-for="Nombres" class="form-control" />
+            <span asp-validation-for="Nombres" class="text-danger"></span>
         </div>
     </div>
     <div class="form-group">

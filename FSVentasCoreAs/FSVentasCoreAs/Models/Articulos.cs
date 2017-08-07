@@ -13,42 +13,42 @@ namespace FSVentasCoreAs.Models
         public int ArticuloId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
-        [Display(Name = "Introducir su Nombre de Articulo")]
+        [Display(Name = "Nombre")]
         public string Nombre { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
-        [Display(Name = "Introducir la Descripcion de Articulos")]
+        [Display(Name = " Descripcion ")]
         public string Descripcion { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
-        [Display(Name = "Elegir la Marca")]
+        [Display(Name = " Marca")]
         [ForeignKey("MarcasArticulos")]
         public int MarcaId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
-        [Display(Name = "Elegir Nombre de Proveedor")]
+        [Display(Name = "Proveedor")]
         [ForeignKey("Proveedores")]
         public int ProveedorId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //--------------
-        [Display(Name = "Elegir la Categoria del Articulo")]
+        [Display(Name = "Categorias")]
         [ForeignKey("Categorias")]
         public int CategoriaId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //------------
-        [Display(Name = "Introducir Cantidad Dispodible")]
+        [Display(Name = "Cantidad Dispodible")]
         public int Cantidad { get; set; }
-        [Display(Name = "Introducir si Tiene Descuento el Articulo")]
+        [Display(Name = "Descuento el Articulo")]
         public double Descuento { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //--------
-        [Display(Name = " Introducir el Precio de Compra")]
+        [Display(Name = "  Precio de Compra")]
         public decimal PrecioCompra { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
-        [Display(Name = "Introducir el Precio de Venta")]
+        [Display(Name = " Precio de Venta")]
         public decimal Precio { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
-        [Display(Name = "Introducir Importe")]
+        [Display(Name = " Importe")]
         public double Importe { get; set; }
 
         [Required]

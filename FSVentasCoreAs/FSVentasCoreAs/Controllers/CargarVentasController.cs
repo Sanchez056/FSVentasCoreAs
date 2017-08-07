@@ -60,7 +60,7 @@ namespace FSVentasCoreAs.Controllers
             return Json(listado);
         }
         [HttpPost]
-        public JsonResult GuardarVentas(Clases nueva)
+        public JsonResult GuardarVentas(ClasesDetalle nueva)
         {
             bool resultado = false;
             if (ModelState.IsValid)

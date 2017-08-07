@@ -20,7 +20,7 @@ namespace FSVentasCoreAs.Controllers
             _context = context;    
         }
         [HttpPost]
-        public JsonResult Modificar(Clases venta)
+        public JsonResult Modificar(ClasesDetalle venta)
         {
             var existe = (BLL.VentasBLL.Buscarr(venta.Encabezado.VentaId) != null);
             if (existe)
@@ -44,7 +44,7 @@ namespace FSVentasCoreAs.Controllers
 
 
         [HttpPost]
-        public JsonResult Eliminar(Clases venta)
+        public JsonResult Eliminar(ClasesDetalle venta)
         {
             var existe = (BLL.VentasBLL.BuscarEncabezado(venta.Encabezado.VentaId) != null);
 

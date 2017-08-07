@@ -73,7 +73,7 @@
                             }
                             else
                             {
-                                <li><a asp-area="" asp-controller="Home" asp-action="Login">Login</a></li>
+                                <li><a asp-area="" asp-controller="Home" asp-action="InicioSeccion">Inicio Seccion</a></li>
 
 
                             }
@@ -119,12 +119,12 @@
                 <ul class="nav navbar-right">
                    @if (Context.Session.GetString("UsuarioId") != null)
                    {
-                    <li><a asp-area="" asp-controller="Home" asp-action="Logout">Salir de Session</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="CerrarSeccion">Salir de Session</a></li>
 
                    }
                    else
                    {
-                    <li><a asp-area="" asp-controller="Home" asp-action="Login">Inicio Session</a></li>
+                    <li><a asp-area="" asp-controller="Home" asp-action="InicioSeccion">Inicio Session</a></li>
 
                    }
 

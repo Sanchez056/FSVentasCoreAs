@@ -5,13 +5,13 @@ using System.Threading.Tasks;
 
 namespace FSVentasCoreAs.Models
 {
-    public class Clases
+    public class ClasesDetalle
     {
         public Ventas Encabezado { get; set; }
 
         public List<VentasDetalles> Detalle { get; set; }
 
-        public Clases()
+        public ClasesDetalle()
         {
             Detalle = new List<VentasDetalles>();
         }

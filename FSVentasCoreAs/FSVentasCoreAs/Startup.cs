@@ -78,7 +78,7 @@ namespace FSVentasCoreAs
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationScheme = "CookiePolicy",
-                LoginPath = new PathString("/Home/Login/"),
+                LoginPath = new PathString("/Home/InicioSeccion/"),
                 AccessDeniedPath = new PathString("/Home/AccessDenied"),
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false

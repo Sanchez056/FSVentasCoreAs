@@ -4,38 +4,53 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
+<h2>Municipios</h2>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Nombre)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Provincias)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MunicipioId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MunicipioId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.MunicipioId">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reporte de Municipios</title>
+</head>
+<body>
+    <!--
+    content of this area will be the content of your PDF file
+    -->
+    <div id="HTMLtoPDF">
+        <h2>Reporte de Municipios</h2>
+        <p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Nombre)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Provincias)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Nombre)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
+                            </td>
+                            
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </p>
+    </div>
+    <a href="#" onclick="HTMLtoPDF()">Descargar Reporte Pdf</a>
+    <script src="js/jspdf.js"></script>
+    <script src="js/jquery-2.1.3.js"></script>
+    <script src="js/pdfFromHTML.js"></script>
+</body>
+</html>

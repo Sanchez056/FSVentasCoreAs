@@ -42,14 +42,14 @@ namespace FSVentasCoreAs.Controllers
         {
             return View();
         }
-        public ActionResult Login()
+        public ActionResult InicioSeccion()
         {
             ViewData["TipoId"] = new SelectList(db.TipoUsuarios, "TipoId", "Nombre");
             return View();
         }
 
         [HttpPost]
-        public ActionResult Login(Usuarios user)
+        public ActionResult InicioSeccion(Usuarios user)
         {
             var account = db.Usuarios.Where(u => u.Nombres == user.Nombres && u.Contraseña == user.Contraseña && u.TipoId == user.TipoId).FirstOrDefault();
             ViewData["TipoId"] = new SelectList(db.TipoUsuarios, "TipoId", "Nombre");
@@ -67,7 +67,7 @@ namespace FSVentasCoreAs.Controllers
 
                 };
 
-                var Identity = new ClaimsIdentity(claims, "login");
+                var Identity = new ClaimsIdentity(claims, "InicioSeccion");
 
                 ClaimsPrincipal principal = new ClaimsPrincipal(Identity);
 
@@ -77,12 +77,12 @@ namespace FSVentasCoreAs.Controllers
             }
             else
             {
-                ModelState.AddModelError("", "El usuario o contraseña incorrecto!!!.");
+                ModelState.AddModelError("", "El usuario o contraseña incorrecto o el Tipo!!!.");
             }
             return View();
         }
 
-        public ActionResult Logout()
+        public ActionResult CerrarSeccion()
         {
             HttpContext.Authentication.SignOutAsync("CookiePolicy");
             HttpContext.Session.Clear();

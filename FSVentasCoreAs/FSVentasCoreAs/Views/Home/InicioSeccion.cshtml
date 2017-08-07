@@ -1,12 +1,12 @@
 @model FSVentasCoreAs.Models.Usuarios
 
 @{
-    ViewData["Title"] = "Login";
+    ViewData["Title"] = "InicioSeccion";
 }
 
-<h2>Login</h2>
+<h2>Inicio Seccion</h2>
 
-<form class="form-horizontal" asp-controller="Home" asp-action="Login" method="post">
+<form class="form-horizontal" asp-controller="Home" asp-action="InicioSeccion" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Nombres" class="col-md-2 control-label"></label>
@@ -30,7 +30,7 @@
     </div>
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-default">Login</button>
+            <button type="submit" class="btn btn-default">Inicio</button>
         </div>
     </div>
 </form>

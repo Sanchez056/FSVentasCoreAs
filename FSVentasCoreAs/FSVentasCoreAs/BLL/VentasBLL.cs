@@ -33,7 +33,7 @@ namespace FSVentasCoreAs.BLL
             return identity;
         }
 
-        public static bool Guardar(Clases venta)
+        public static bool Guardar(ClasesDetalle venta)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
@@ -90,14 +90,14 @@ namespace FSVentasCoreAs.BLL
             }
             return ID;
         }
-        public static Clases Buscarr(int? facturaId)
+        public static ClasesDetalle Buscarr(int? facturaId)
         {
-            Clases venta = null;
+            ClasesDetalle venta = null;
             using (var db = new FSVentasCoreDb())
             {
                 try
                 {
-                    venta = new Clases()
+                    venta = new ClasesDetalle()
                     {
                         Encabezado = db.Ventas.Find(facturaId)
                     };
@@ -118,7 +118,7 @@ namespace FSVentasCoreAs.BLL
             }
             return venta;
         }
-        public static bool Modificar(Clases venta)
+        public static bool Modificar(ClasesDetalle venta)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
@@ -140,7 +140,7 @@ namespace FSVentasCoreAs.BLL
             }
             return resultado;
         }
-        public static bool Eliminar(Clases venta)
+        public static bool Eliminar(ClasesDetalle venta)
         {
             bool resultado = false;
             using (var db = new FSVentasCoreDb())
