@@ -20,16 +20,23 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
+        // GET: Articulos
+        public async Task<IActionResult> Index()
+        {
+            var fSVentasCoreDb = _context.Articulos.Include(a => a.CategoriasArticulos).Include(a => a.MarcasArticulos).Include(a => a.Proveedores);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+
 
         // GET: Articulos
-        public IActionResult Index()
+        public async Task<IActionResult> Consulta()
         {
-           var fSVentasCoreDb = _context.Articulos.Include(a => a.CategoriasArticulos).Include(a => a.MarcasArticulos).Include(a => a.Proveedores);
-            return View(BLL.ArticulosBLL.GetLista());
+            var fSVentasCoreDb = _context.Articulos.Include(a => a.CategoriasArticulos).Include(a => a.MarcasArticulos).Include(a => a.Proveedores);
+            return View(await fSVentasCoreDb.ToListAsync());
         }
 
         // GET: Articulos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -50,11 +57,11 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Articulos/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre");
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId");
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo");
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre");
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre");
             return View();
         }
 
@@ -63,22 +70,22 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArticuloId,Nombre,Descripcion,MarcaId,ProveedorId,CategoriaId,Cantidad,Descuento,PrecioCompra,Precio,Importe,Fecha")] Articulos articulos)
+        public async Task<IActionResult> Crear([Bind("ArticuloId,Nombre,Descripcion,MarcaId,ProveedorId,CategoriaId,Cantidad,Descuento,PrecioCompra,Precio,Importe,Fecha")] Articulos articulos)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(articulos);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", articulos.MarcaId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 
         // GET: Articulos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -91,8 +98,8 @@ namespace FSVentasCoreAs.Controllers
                 return NotFound();
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", articulos.MarcaId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 
@@ -101,7 +108,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ArticuloId,Nombre,Descripcion,MarcaId,ProveedorId,CategoriaId,Cantidad,Descuento,PrecioCompra,Precio,Importe,Fecha")] Articulos articulos)
+        public async Task<IActionResult> Editar(int id, [Bind("ArticuloId,Nombre,Descripcion,MarcaId,ProveedorId,CategoriaId,Cantidad,Descuento,PrecioCompra,Precio,Importe,Fecha")] Articulos articulos)
         {
             if (id != articulos.ArticuloId)
             {
@@ -126,16 +133,16 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             ViewData["CategoriaId"] = new SelectList(_context.CategoriasArticulos, "CategoriaId", "Nombre", articulos.CategoriaId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", articulos.MarcaId);
-            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Correo", articulos.ProveedorId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", articulos.MarcaId);
+            ViewData["ProveedorId"] = new SelectList(_context.Proveedores, "ProveedorId", "Nombre", articulos.ProveedorId);
             return View(articulos);
         }
 
         // GET: Articulos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -156,14 +163,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Articulos/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var articulos = await _context.Articulos.SingleOrDefaultAsync(m => m.ArticuloId == id);
             _context.Articulos.Remove(articulos);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool ArticulosExists(int id)

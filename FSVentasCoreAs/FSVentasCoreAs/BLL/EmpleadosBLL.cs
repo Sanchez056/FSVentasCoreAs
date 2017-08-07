@@ -17,7 +17,7 @@ namespace FSVentasCoreAs.BLL
             {
                 try
                 {
-                    var p = Buscar(e.Empleadod);
+                    var p = Buscar(e.EmpleadoId);
                     if (p == null)
                         db.Empleados.Add(e);
                     else
@@ -94,7 +94,7 @@ namespace FSVentasCoreAs.BLL
             {
                 try
                 {
-                    list = db.Empleados.Where(p => p.Empleadod == Id).ToList();
+                    list = db.Empleados.Where(p => p.EmpleadoId == Id).ToList();
                 }
                 catch (Exception)
                 {

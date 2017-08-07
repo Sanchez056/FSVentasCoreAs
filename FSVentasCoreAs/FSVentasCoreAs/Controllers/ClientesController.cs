@@ -23,16 +23,19 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
-
-        // GET: Clientes
         public async Task<IActionResult> Index()
         {
             var fSVentasCoreDb = _context.Clientes.Include(c => c.DistritosMunicipales).Include(c => c.Municipios).Include(c => c.Provincias).Include(c => c.Sectores);
             return View(await fSVentasCoreDb.ToListAsync());
         }
-      
+        // GET: Clientes
+        public async Task<IActionResult> Consulta()
+        {
+            var fSVentasCoreDb = _context.Clientes.Include(c => c.DistritosMunicipales).Include(c => c.Municipios).Include(c => c.Provincias).Include(c => c.Sectores);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
         // GET: Clientes/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -54,7 +57,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Clientes/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             List<Provincias> lstProvincia = db.Provincias.ToList();
             lstProvincia.Insert(0, new Provincias { ProvinciaId = 0, Nombre = "--Select Provincia--" });
@@ -75,18 +78,18 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ClienteId,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Clientes clientes)
+        public async Task<IActionResult> Crear([Bind("ClienteId,Nombre,Sexo,Cedula,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Celular,Fecha")] Clientes clientes)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(clientes);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", clientes.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", clientes.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", clientes.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", clientes.SectorId);
             return View(clientes);
         }
         [HttpGet]
@@ -170,7 +173,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Clientes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -182,10 +185,10 @@ namespace FSVentasCoreAs.Controllers
             {
                 return NotFound();
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", clientes.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", clientes.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", clientes.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", clientes.SectorId);
             return View(clientes);
         }
 
@@ -219,17 +222,17 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", clientes.DistritoId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", clientes.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", clientes.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", clientes.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", clientes.DistritoId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", clientes.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", clientes.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", clientes.SectorId);
             return View(clientes);
         }
 
         // GET: Clientes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -251,14 +254,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Clientes/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var clientes = await _context.Clientes.SingleOrDefaultAsync(m => m.ClienteId == id);
             _context.Clientes.Remove(clientes);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool ClientesExists(int id)

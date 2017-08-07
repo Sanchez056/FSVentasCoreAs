@@ -14,12 +14,13 @@ namespace FSVentasCoreAs.Models
         [Remote("UsuarioDisponible", "Usuarios")]
         public int UsuarioId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
-        [Display(Name = "Introducir su Nombre")]
+        [Display(Name = "Nombre")]
         public string Nombres { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
-        [Display(Name = "Introducir su Contraseña")]
+        [Display(Name = "Contraseña")]
         [DataType(DataType.Password)]
         public string Contraseña { get; set; }
+        [Display(Name = "Tipo de Usuarios")]
         [ForeignKey("TipoUsuarios")]
         public int TipoId { get; set; }
         public virtual TipoUsuarios TipoUsuarios { get; set; }

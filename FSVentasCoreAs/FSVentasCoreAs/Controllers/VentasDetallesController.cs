@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -18,11 +19,15 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
+        public IActionResult Index()
+        {
+            return View(VentasDetallesBLL.GetLista());
+        }
 
         // GET: VentasDetalles
-        public async Task<IActionResult> Index()
+        public IActionResult Consulta()
         {
-            return View(await _context.VentasDetalles.ToListAsync());
+            return View(VentasDetallesBLL.GetLista());
         }
         [HttpGet]
         public JsonResult BuscarF(int ventaId)
@@ -32,7 +37,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: VentasDetalles/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -50,7 +55,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: VentasDetalles/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             return View();
         }
@@ -60,19 +65,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
+        public async Task<IActionResult> Crear([Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(ventasDetalles);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(ventasDetalles);
         }
 
         // GET: VentasDetalles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -92,7 +97,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
+        public async Task<IActionResult> Editar(int id, [Bind("Id,VentaId,ArticuloId,Precio,Cantidad")] VentasDetalles ventasDetalles)
         {
             if (id != ventasDetalles.Id)
             {
@@ -117,13 +122,13 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(ventasDetalles);
         }
 
         // GET: VentasDetalles/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -141,14 +146,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: VentasDetalles/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ventasDetalles = await _context.VentasDetalles.SingleOrDefaultAsync(m => m.Id == id);
             _context.VentasDetalles.Remove(ventasDetalles);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool VentasDetallesExists(int id)

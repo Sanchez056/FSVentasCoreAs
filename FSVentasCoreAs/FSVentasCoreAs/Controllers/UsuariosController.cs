@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using System.Net;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -28,21 +29,29 @@ namespace FSVentasCoreAs.Controllers
         {
             return Json(Nombre);
         }
-
-
-    
-
-        // GET: Usuarios
         public async Task<IActionResult> Index()
         {
             var fSVentasCoreDb = _context.Usuarios.Include(u => u.TipoUsuarios);
             return View(await fSVentasCoreDb.ToListAsync());
         }
-        
+
+
+        // GET: Usuarios
+        public async Task<IActionResult> Consulta()
+        {
+            var fSVentasCoreDb = _context.Usuarios.Include(u => u.TipoUsuarios);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+        public async Task<IActionResult> ReportUsuarios()
+        {
+            var fSVentasCoreDb = _context.Usuarios.Include(u => u.TipoUsuarios);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+
 
 
         // GET: Usuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -62,7 +71,7 @@ namespace FSVentasCoreAs.Controllers
 
 
         // GET: Usuarios/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre");
             return View();
@@ -73,7 +82,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
+        public async Task<IActionResult> Crear([Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +95,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -107,7 +116,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
+        public async Task<IActionResult> Editar(int id, [Bind("UsuarioId,Nombres,Contraseña,TipoId")] Usuarios usuarios)
         {
             if (id != usuarios.UsuarioId)
             {
@@ -132,14 +141,14 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             ViewData["TipoId"] = new SelectList(_context.TipoUsuarios, "TipoId", "Nombre", usuarios.TipoId);
             return View(usuarios);
         }
 
         // GET: Usuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -158,14 +167,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Usuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var usuarios = await _context.Usuarios.SingleOrDefaultAsync(m => m.UsuarioId == id);
             _context.Usuarios.Remove(usuarios);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool UsuariosExists(int id)

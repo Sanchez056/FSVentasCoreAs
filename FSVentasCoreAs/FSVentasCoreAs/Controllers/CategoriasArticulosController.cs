@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,15 +21,19 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
+        public IActionResult Index()
+        {
+            return View(CategoriasArticulosBLL.GetLista());
+        }
 
         // GET: CategoriasArticulos
-        public async Task<IActionResult> Index()
+        public IActionResult Consulta()
         {
-            return View(await _context.CategoriasArticulos.ToListAsync());
+            return View(CategoriasArticulosBLL.GetLista());
         }
 
         // GET: CategoriasArticulos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -46,7 +51,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: CategoriasArticulos/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             return View();
         }
@@ -56,19 +61,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CategoriaId,Nombre")] CategoriasArticulos categoriasArticulos)
+        public async Task<IActionResult> Crear([Bind("CategoriaId,Nombre")] CategoriasArticulos categoriasArticulos)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(categoriasArticulos);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(categoriasArticulos);
         }
 
         // GET: CategoriasArticulos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -88,7 +93,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CategoriaId,Nombre")] CategoriasArticulos categoriasArticulos)
+        public async Task<IActionResult> Editar(int id, [Bind("CategoriaId,Nombre")] CategoriasArticulos categoriasArticulos)
         {
             if (id != categoriasArticulos.CategoriaId)
             {
@@ -113,13 +118,13 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(categoriasArticulos);
         }
 
         // GET: CategoriasArticulos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -137,14 +142,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: CategoriasArticulos/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var categoriasArticulos = await _context.CategoriasArticulos.SingleOrDefaultAsync(m => m.CategoriaId == id);
             _context.CategoriasArticulos.Remove(categoriasArticulos);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool CategoriasArticulosExists(int id)

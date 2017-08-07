@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models.Dirreciones;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,16 +21,22 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
-
-        // GET: Sectores
         public async Task<IActionResult> Index()
         {
             var fSVentasCoreDb = _context.Sectores.Include(s => s.DistritosMunicipales);
             return View(await fSVentasCoreDb.ToListAsync());
         }
 
+
+        // GET: Sectores
+        public async Task<IActionResult> Consulta()
+        {
+            var fSVentasCoreDb = _context.Sectores.Include(s => s.DistritosMunicipales);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+
         // GET: Sectores/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -48,9 +55,9 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Sectores/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId");
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre");
             return View();
         }
 
@@ -59,20 +66,20 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("SectorId,Nombre,DistritoId")] Sectores sectores)
+        public async Task<IActionResult> Crear([Bind("SectorId,Nombre,DistritoId")] Sectores sectores)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(sectores);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", sectores.DistritoId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", sectores.DistritoId);
             return View(sectores);
         }
 
         // GET: Sectores/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -84,7 +91,7 @@ namespace FSVentasCoreAs.Controllers
             {
                 return NotFound();
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", sectores.DistritoId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", sectores.DistritoId);
             return View(sectores);
         }
 
@@ -93,7 +100,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SectorId,Nombre,DistritoId")] Sectores sectores)
+        public async Task<IActionResult> Editar(int id, [Bind("SectorId,Nombre,DistritoId")] Sectores sectores)
         {
             if (id != sectores.SectorId)
             {
@@ -118,14 +125,14 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", sectores.DistritoId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", sectores.DistritoId);
             return View(sectores);
         }
 
         // GET: Sectores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -144,14 +151,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Sectores/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var sectores = await _context.Sectores.SingleOrDefaultAsync(m => m.SectorId == id);
             _context.Sectores.Remove(sectores);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool SectoresExists(int id)

@@ -1,0 +1,24 @@
+@model FSVentasCoreAs.Models.Dirreciones.Provincias
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Provincias</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Editar" asp-route-id="@Model.ProvinciaId">Editar</a> |
+    <a asp-action="Consulta">Ir a Lista</a>
+</div>

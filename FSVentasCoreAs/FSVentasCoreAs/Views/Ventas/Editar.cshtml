@@ -1,0 +1,61 @@
+@model FSVentasCoreAs.Models.Ventas
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h2>Editar</h2>
+
+<form asp-action="Editar">
+    <div class="form-horizontal">
+        <h4>Ventas</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="VentaId" />
+        <div class="form-group">
+            <label asp-for="ClienteId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ClienteId" class="form-control" />
+                <span asp-validation-for="ClienteId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Clientes" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Clientes" class="form-control" />
+                <span asp-validation-for="Clientes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Empleado" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Empleado" class="form-control" />
+                <span asp-validation-for="Empleado" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Fecha" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Fecha" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Total" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Total" class="form-control" />
+                <span asp-validation-for="Total" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Consulta">Ir a Lista</a>
+</div>
+

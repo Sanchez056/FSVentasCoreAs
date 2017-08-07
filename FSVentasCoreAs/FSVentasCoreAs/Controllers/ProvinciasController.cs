@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models.Dirreciones;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,15 +21,18 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
-
-        // GET: Provincias
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Provincias.ToListAsync());
+            return View(ProvinciasBLL.GetLista());
+        }
+            // GET: Provincias
+            public IActionResult Consulta()
+        {
+            return View(ProvinciasBLL.GetLista());
         }
 
         // GET: Provincias/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -46,7 +50,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Provincias/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             return View();
         }
@@ -56,19 +60,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProvinciaId,Nombre")] Provincias provincias)
+        public async Task<IActionResult> Crear([Bind("ProvinciaId,Nombre")] Provincias provincias)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(provincias);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(provincias);
         }
 
         // GET: Provincias/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -88,7 +92,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProvinciaId,Nombre")] Provincias provincias)
+        public async Task<IActionResult> Editar(int id, [Bind("ProvinciaId,Nombre")] Provincias provincias)
         {
             if (id != provincias.ProvinciaId)
             {
@@ -113,13 +117,13 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(provincias);
         }
 
         // GET: Provincias/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -137,14 +141,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Provincias/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var provincias = await _context.Provincias.SingleOrDefaultAsync(m => m.ProvinciaId == id);
             _context.Provincias.Remove(provincias);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool ProvinciasExists(int id)

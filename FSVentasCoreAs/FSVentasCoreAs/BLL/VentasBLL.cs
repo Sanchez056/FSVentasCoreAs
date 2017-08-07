@@ -11,7 +11,28 @@ namespace FSVentasCoreAs.BLL
 {
     public class VentasBLL
     {
-        
+        public static int Identity()
+        {
+            int identity = 0;
+            string con =
+            @"Server=tcp:adolfosanchez.database.windows.net,1433;Initial Catalog=FSVentasCoreDb;Persist Security Info=False;User ID=Themaster.56;Password=ASM199411056asm;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            using (SqlConnection conexion = new SqlConnection(con))
+            {
+                try
+                {
+                    conexion.Open();
+                    SqlCommand comando = new SqlCommand("SELECT IDENT_CURRENT('Ventas')", conexion);
+                    identity = Convert.ToInt32(comando.ExecuteScalar());
+                    conexion.Close();
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+            return identity;
+        }
+
         public static bool Guardar(Clases venta)
         {
             bool resultado = false;

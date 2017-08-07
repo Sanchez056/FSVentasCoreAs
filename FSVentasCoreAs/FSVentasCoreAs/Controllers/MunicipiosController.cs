@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models.Dirreciones;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -21,15 +22,19 @@ namespace FSVentasCoreAs.Controllers
             _context = context;    
         }
 
-        // GET: Municipios
         public async Task<IActionResult> Index()
         {
             var fSVentasCoreDb = _context.Municipios.Include(m => m.Provincias);
             return View(await fSVentasCoreDb.ToListAsync());
         }
-
+        // GET: Municipios
+        public async Task<IActionResult> Consulta()
+        {
+            var fSVentasCoreDb = _context.Municipios.Include(m => m.Provincias);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
         // GET: Municipios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -48,9 +53,9 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Municipios/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId");
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre");
             return View();
         }
 
@@ -59,20 +64,20 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MunicipioId,Nombre,ProvinciaId")] Municipios municipios)
+        public async Task<IActionResult> Crear([Bind("MunicipioId,Nombre,ProvinciaId")] Municipios municipios)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(municipios);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", municipios.ProvinciaId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", municipios.ProvinciaId);
             return View(municipios);
         }
 
         // GET: Municipios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -84,7 +89,7 @@ namespace FSVentasCoreAs.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", municipios.ProvinciaId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", municipios.ProvinciaId);
             return View(municipios);
         }
 
@@ -93,7 +98,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MunicipioId,Nombre,ProvinciaId")] Municipios municipios)
+        public async Task<IActionResult> Editar(int id, [Bind("MunicipioId,Nombre,ProvinciaId")] Municipios municipios)
         {
             if (id != municipios.MunicipioId)
             {
@@ -118,14 +123,14 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", municipios.ProvinciaId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", municipios.ProvinciaId);
             return View(municipios);
         }
 
         // GET: Municipios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -144,14 +149,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Municipios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var municipios = await _context.Municipios.SingleOrDefaultAsync(m => m.MunicipioId == id);
             _context.Municipios.Remove(municipios);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool MunicipiosExists(int id)

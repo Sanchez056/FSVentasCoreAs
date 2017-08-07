@@ -9,6 +9,7 @@ using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
 using Microsoft.AspNetCore.Authorization;
 using FSVentasCoreAs.Models.Dirreciones;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -22,17 +23,21 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
-
-
-        // GET: Proveedores
         public async Task<IActionResult> Index()
         {
             var fSVentasCoreDb = _context.Proveedores.Include(p => p.DistritosMunicipales).Include(p => p.MarcasArticulos).Include(p => p.Municipios).Include(p => p.Provincias).Include(p => p.Sectores);
             return View(await fSVentasCoreDb.ToListAsync());
         }
 
+        // GET: Proveedores
+        public async Task<IActionResult> Consulta()
+        {
+            var fSVentasCoreDb = _context.Proveedores.Include(p => p.DistritosMunicipales).Include(p => p.MarcasArticulos).Include(p => p.Municipios).Include(p => p.Provincias).Include(p => p.Sectores);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+
         // GET: Proveedores/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -55,7 +60,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: Proveedores/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             List<Provincias> lstProvincia = db.Provincias.ToList();
             lstProvincia.Insert(0, new Provincias { ProvinciaId = 0, Nombre = "--Select Provincia--" });
@@ -74,19 +79,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ProveedorId,Nombre,MarcaId,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Fax,Correo,Fecha")] Proveedores proveedores)
+        public async Task<IActionResult> Crear([Bind("ProveedorId,Nombre,MarcaId,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Fax,Correo,Fecha")] Proveedores proveedores)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(proveedores);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", proveedores.DistritoId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", proveedores.MarcaId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", proveedores.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", proveedores.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", proveedores.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", proveedores.DistritoId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", proveedores.MarcaId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", proveedores.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", proveedores.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", proveedores.SectorId);
             return View(proveedores);
         }
         public JsonResult GetMunicipiosByProvinciaId(int id)
@@ -164,7 +169,7 @@ namespace FSVentasCoreAs.Controllers
 
 
         // GET: Proveedores/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -176,11 +181,11 @@ namespace FSVentasCoreAs.Controllers
             {
                 return NotFound();
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", proveedores.DistritoId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", proveedores.MarcaId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", proveedores.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", proveedores.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", proveedores.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", proveedores.DistritoId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", proveedores.MarcaId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", proveedores.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", proveedores.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", proveedores.SectorId);
             return View(proveedores);
         }
 
@@ -189,7 +194,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProveedorId,Nombre,MarcaId,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Fax,Correo,Fecha")] Proveedores proveedores)
+        public async Task<IActionResult> Editar(int id, [Bind("ProveedorId,Nombre,MarcaId,ProvinciaId,MunicipioId,DistritoId,SectorId,Direccion,Telefono,Fax,Correo,Fecha")] Proveedores proveedores)
         {
             if (id != proveedores.ProveedorId)
             {
@@ -214,18 +219,18 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "DistritoId", proveedores.DistritoId);
-            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "MarcaId", proveedores.MarcaId);
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", proveedores.MunicipioId);
-            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "ProvinciaId", proveedores.ProvinciaId);
-            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "SectorId", proveedores.SectorId);
+            ViewData["DistritoId"] = new SelectList(_context.DistritosMunicipales, "DistritoId", "Nombre", proveedores.DistritoId);
+            ViewData["MarcaId"] = new SelectList(_context.MarcasArticulos, "MarcaId", "Nombre", proveedores.MarcaId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", proveedores.MunicipioId);
+            ViewData["ProvinciaId"] = new SelectList(_context.Provincias, "ProvinciaId", "Nombre", proveedores.ProvinciaId);
+            ViewData["SectorId"] = new SelectList(_context.Sectores, "SectorId", "Nombre", proveedores.SectorId);
             return View(proveedores);
         }
 
         // GET: Proveedores/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -248,14 +253,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: Proveedores/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var proveedores = await _context.Proveedores.SingleOrDefaultAsync(m => m.ProveedorId == id);
             _context.Proveedores.Remove(proveedores);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool ProveedoresExists(int id)

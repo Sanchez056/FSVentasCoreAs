@@ -9,41 +9,6 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-
-v>
-<script type="text/javascript">
-    var gridDataUrl = '/Clientes/JsonSalesCollection';
-    // use date.js to calculate the values for this month
-    var startDate = Date.parse('today').moveToFirstDayOfMonth();
-    var endDate = Date.parse('today');
-
-    jQuery("#list").jqGrid({
-
-        url: gridDataUrl + '?startDate=' + startDate.toJSONString() + '&endDate=' + endDate.toJSONString(),
-        datatype: "json",
-        mtype: 'GET',
-        colNames: ['Sale Id', 'Quantity', 'Product', 'Customer', 'Date', 'Amount'],
-        colModel: [
-            { name: 'Id', index: 'Id', width: 50, align: 'left' },
-            { name: 'Quantity', index: 'Quantity', width: 100, align: 'left' },
-            { name: 'Product', index: 'Product', width: 100, align: 'left' },
-            { name: 'Customer', index: 'Customer', width: 100, align: 'left' },
-            { name: 'Date', index: 'Date', width: 100, align: 'left' },
-            { name: 'Amount', index: 'Amount', width: 100, align: 'right' }],
-        rowNum: 20,
-        rowList: [10, 20, 30],
-        imgpath: gridimgpath,
-        height: 'auto',
-        width: '700',
-        pager: jQuery('#pager'),
-        sortname: 'Id',
-        viewrecords: true,
-        sortorder: "desc",
-        caption: "Sales"
-    });
-
-</script>
 <table class="table">
     <thead>
         <tr>
@@ -108,16 +73,16 @@ v>
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DistritosMunicipales.DistritoId)
+                @Html.DisplayFor(modelItem => item.DistritosMunicipales.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Municipios.MunicipioId)
+                @Html.DisplayFor(modelItem => item.Municipios.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Provincias.ProvinciaId)
+                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sectores.SectorId)
+                @Html.DisplayFor(modelItem => item.Sectores.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ClienteId">Edit</a> |

@@ -70,19 +70,19 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DistritosMunicipales.DistritoId)
+                @Html.DisplayFor(modelItem => item.DistritosMunicipales.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MarcasArticulos.MarcaId)
+                @Html.DisplayFor(modelItem => item.MarcasArticulos.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Municipios.MunicipioId)
+                @Html.DisplayFor(modelItem => item.Municipios.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Provincias.ProvinciaId)
+                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sectores.SectorId)
+                @Html.DisplayFor(modelItem => item.Sectores.Nombre)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProveedorId">Edit</a> |

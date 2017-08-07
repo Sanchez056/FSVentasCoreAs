@@ -11,7 +11,7 @@ namespace FSVentasCoreAs.Models
     public class Empleados
     {
         [Key]
-        public int Empleadod { get; set; }
+        public int EmpleadoId { get; set; }
         [Required(ErrorMessage = "Este Campo es Requerido")]
         //-----------
         [Display(Name = "Su Nombre")]

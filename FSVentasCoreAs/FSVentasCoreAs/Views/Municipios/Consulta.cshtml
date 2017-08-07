@@ -1,0 +1,41 @@
+@model IEnumerable<FSVentasCoreAs.Models.Dirreciones.Municipios>
+
+@{
+    ViewData["Title"] = "Consulta";
+}
+
+<h2>Consulta</h2>
+
+<p>
+    <a asp-action="Crear">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Provincias)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
+            </td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@item.MunicipioId">Editar</a> |
+                <a asp-action="Detalle" asp-route-id="@item.MunicipioId">Detalle</a> |
+                <a asp-action="Eliminar" asp-route-id="@item.MunicipioId">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

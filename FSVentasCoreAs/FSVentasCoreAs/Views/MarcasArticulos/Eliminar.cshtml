@@ -1,0 +1,29 @@
+@model FSVentasCoreAs.Models.MarcasArticulos
+
+@{
+    ViewData["Title"] = "Eliminar";
+}
+
+<h2>Eliminar</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>MarcasArticulos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <input type="hidden" asp-for="MarcaId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+    </dl>
+    
+    <form asp-action="Eliminar">
+        <div class="form-actions no-color">
+            <input type="submit" value="Eliminar" class="btn btn-default" /> |
+            <a asp-action="Consulta">Back to List</a>
+        </div>
+    </form>
+</div>

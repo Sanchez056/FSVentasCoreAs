@@ -1,0 +1,84 @@
+@model FSVentasCoreAs.Models.Articulos
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Articulos</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Cantidad)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Cantidad)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Descuento)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Descuento)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.PrecioCompra)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.PrecioCompra)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Importe)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Importe)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Fecha)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Fecha)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.CategoriasArticulos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.CategoriasArticulos.Nombre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.MarcasArticulos)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.MarcasArticulos.Nombre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Proveedores)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Proveedores.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Editar" asp-route-id="@Model.ArticuloId">Editar</a> |
+    <a asp-action="Consulta">Back to List</a>
+</div>

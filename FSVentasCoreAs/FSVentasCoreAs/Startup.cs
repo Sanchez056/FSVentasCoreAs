@@ -32,6 +32,14 @@ namespace FSVentasCoreAs
             // Add framework services.
             services.AddDbContext<FSVentasCoreDb>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("CookiePolicy", policy =>
@@ -75,7 +83,7 @@ namespace FSVentasCoreAs
                 AutomaticAuthenticate = false,
                 AutomaticChallenge = false
             });
-
+            app.UseCors("CorsPolicy");
             app.UseStaticFiles();
             app.UseSession();
 

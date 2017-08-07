@@ -1,0 +1,35 @@
+@model IEnumerable<FSVentasCoreAs.Models.MarcasArticulos>
+
+@{
+    ViewData["Title"] = "Consulta";
+}
+
+<h2>Consulta</h2>
+
+<p>
+    <a asp-action="Create">Crear Nuevo</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                <a asp-action="Editar" asp-route-id="@item.MarcaId">Editar</a> |
+                <a asp-action="Detalle" asp-route-id="@item.MarcaId">Detalle</a> |
+                <a asp-action="Eliminar" asp-route-id="@item.MarcaId">Eliminar</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

@@ -1,0 +1,30 @@
+@model FSVentasCoreAs.Models.Dirreciones.DistritosMunicipales
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>DistritosMunicipales</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Municipios)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Municipios.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Editar" asp-route-id="@Model.DistritoId">Editar</a> |
+    <a asp-action="Consulta">Back to List</a>
+</div>

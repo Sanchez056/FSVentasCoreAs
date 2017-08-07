@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,15 +21,19 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
+        public IActionResult Index()
+        {
+            return View(TipoUsuariosBLL.GetLista());
+        }
 
         // GET: TipoUsuarios
-        public async Task<IActionResult> Index()
+        public  IActionResult Consulta()
         {
-            return View(await _context.TipoUsuarios.ToListAsync());
+            return View(TipoUsuariosBLL.GetLista());
         }
 
         // GET: TipoUsuarios/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -46,7 +51,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: TipoUsuarios/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             return View();
         }
@@ -56,19 +61,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TipoId,Nombre")] TipoUsuarios tipoUsuarios)
+        public async Task<IActionResult> Crear([Bind("TipoId,Nombre")] TipoUsuarios tipoUsuarios)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(tipoUsuarios);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(tipoUsuarios);
         }
 
         // GET: TipoUsuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -88,7 +93,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TipoId,Nombre")] TipoUsuarios tipoUsuarios)
+        public async Task<IActionResult> Editar(int id, [Bind("TipoId,Nombre")] TipoUsuarios tipoUsuarios)
         {
             if (id != tipoUsuarios.TipoId)
             {
@@ -113,13 +118,13 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(tipoUsuarios);
         }
 
         // GET: TipoUsuarios/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -137,14 +142,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: TipoUsuarios/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var tipoUsuarios = await _context.TipoUsuarios.SingleOrDefaultAsync(m => m.TipoId == id);
             _context.TipoUsuarios.Remove(tipoUsuarios);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool TipoUsuariosExists(int id)

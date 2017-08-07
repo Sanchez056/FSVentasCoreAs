@@ -73,21 +73,21 @@
                 @Html.DisplayFor(modelItem => item.Fecha)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DistritosMunicipales.DistritoId)
+                @Html.DisplayFor(modelItem => item.DistritosMunicipales.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Municipios.MunicipioId)
+                @Html.DisplayFor(modelItem => item.Municipios.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Provincias.ProvinciaId)
+                @Html.DisplayFor(modelItem => item.Provincias.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Sectores.SectorId)
+                @Html.DisplayFor(modelItem => item.Sectores.Nombre)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Empleadod">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Empleadod">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Empleadod">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.EmpleadoId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.EmpleadoId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.EmpleadoId">Delete</a>
             </td>
         </tr>
 }

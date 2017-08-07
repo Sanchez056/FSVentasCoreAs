@@ -13,7 +13,7 @@ namespace FSVentasCoreAs.Models
         public int ClienteId { get; set; }
         public string Clientes { get; set; }
         public DateTime Fecha { get; set; }
-        public double Total { get; set; }
+        public decimal Total { get; set; }
         public string Empleado { get; set; }
     }
 }

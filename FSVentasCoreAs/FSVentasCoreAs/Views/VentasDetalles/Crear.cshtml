@@ -1,0 +1,68 @@
+@model FSVentasCoreAs.Models.VentasDetalles
+
+@{
+    ViewData["Title"] = "Crear";
+}
+
+<h2>Crear</h2>
+
+<form asp-action="Crear">
+    <div class="form-horizontal">
+        <h4>VentasDetalles</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="VentaId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="VentaId" class="form-control" />
+                <span asp-validation-for="VentaId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="ArticuloId" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="ArticuloId" class="form-control" />
+                <span asp-validation-for="ArticuloId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Precio" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Precio" class="form-control" />
+                <span asp-validation-for="Precio" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Descuento" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Descuento" class="form-control" />
+                <span asp-validation-for="Descuento" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Cantidad" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Cantidad" class="form-control" />
+                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SubTotal" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="SubTotal" class="form-control" />
+                <span asp-validation-for="SubTotal" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Crear" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+<div>
+    <a asp-action="Consulta">Ir a Lista</a>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

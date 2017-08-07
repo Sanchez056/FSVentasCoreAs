@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,15 +21,20 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
+        public IActionResult Index()
+        {
+            return View(MarcasArticulosBLL.GetLista());
+        }
+
 
         // GET: MarcasArticulos
-        public async Task<IActionResult> Index()
+        public IActionResult Consulta()
         {
-            return View(await _context.MarcasArticulos.ToListAsync());
+            return View(MarcasArticulosBLL.GetLista());
         }
 
         // GET: MarcasArticulos/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -46,7 +52,7 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: MarcasArticulos/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
             return View();
         }
@@ -56,19 +62,19 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MarcaId,Nombre")] MarcasArticulos marcasArticulos)
+        public async Task<IActionResult> Crear([Bind("MarcaId,Nombre")] MarcasArticulos marcasArticulos)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(marcasArticulos);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(marcasArticulos);
         }
 
         // GET: MarcasArticulos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -88,7 +94,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MarcaId,Nombre")] MarcasArticulos marcasArticulos)
+        public async Task<IActionResult> Editar(int id, [Bind("MarcaId,Nombre")] MarcasArticulos marcasArticulos)
         {
             if (id != marcasArticulos.MarcaId)
             {
@@ -113,13 +119,13 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
             return View(marcasArticulos);
         }
 
         // GET: MarcasArticulos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -137,14 +143,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: MarcasArticulos/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var marcasArticulos = await _context.MarcasArticulos.SingleOrDefaultAsync(m => m.MarcaId == id);
             _context.MarcasArticulos.Remove(marcasArticulos);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool MarcasArticulosExists(int id)

@@ -1,0 +1,36 @@
+@model FSVentasCoreAs.Models.Usuarios
+
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<h2>Detalle</h2>
+
+<div>
+    <h4>Usuarios</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombres)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Nombres)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Contraseña)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Contraseña)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TipoUsuarios)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TipoUsuarios.Nombre)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Editar" asp-route-id="@Model.UsuarioId">Editar</a> |
+    <a asp-action="Consulta">Ir a Lista</a>
+</div>

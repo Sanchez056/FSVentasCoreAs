@@ -1,0 +1,33 @@
+@model FSVentasCoreAs.Models.TipoUsuarios
+
+@{
+    ViewData["Title"] = "Editar";
+}
+
+<h2>Editar</h2>
+
+<form asp-action="Editar">
+    <div class="form-horizontal">
+        <h4>TipoUsuarios</h4>
+        <hr />
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="TipoId" />
+        <div class="form-group">
+            <label asp-for="Nombre" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Guardar" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Consulta">Back to List</a>
+</div>
+

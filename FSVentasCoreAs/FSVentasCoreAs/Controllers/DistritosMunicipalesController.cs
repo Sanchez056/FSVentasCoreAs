@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using FSVentasCoreAs.DAL;
 using FSVentasCoreAs.Models.Dirreciones;
 using Microsoft.AspNetCore.Authorization;
+using FSVentasCoreAs.BLL;
 
 namespace FSVentasCoreAs.Controllers
 {
@@ -20,16 +21,20 @@ namespace FSVentasCoreAs.Controllers
         {
             _context = context;    
         }
-
-        // GET: DistritosMunicipales
         public async Task<IActionResult> Index()
+        {
+            var fSVentasCoreDb = _context.DistritosMunicipales.Include(d => d.Municipios);
+            return View(await fSVentasCoreDb.ToListAsync());
+        }
+        // GET: DistritosMunicipales
+        public async Task<IActionResult> Consulta()
         {
             var fSVentasCoreDb = _context.DistritosMunicipales.Include(d => d.Municipios);
             return View(await fSVentasCoreDb.ToListAsync());
         }
 
         // GET: DistritosMunicipales/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Detalle(int? id)
         {
             if (id == null)
             {
@@ -48,9 +53,9 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // GET: DistritosMunicipales/Create
-        public IActionResult Create()
+        public IActionResult Crear()
         {
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId");
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre");
             return View();
         }
 
@@ -59,20 +64,20 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("DistritoId,Nombre,MunicipioId")] DistritosMunicipales distritosMunicipales)
+        public async Task<IActionResult> Crear([Bind("DistritoId,Nombre,MunicipioId")] DistritosMunicipales distritosMunicipales)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(distritosMunicipales);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", distritosMunicipales.MunicipioId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", distritosMunicipales.MunicipioId);
             return View(distritosMunicipales);
         }
 
         // GET: DistritosMunicipales/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Editar(int? id)
         {
             if (id == null)
             {
@@ -84,7 +89,7 @@ namespace FSVentasCoreAs.Controllers
             {
                 return NotFound();
             }
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", distritosMunicipales.MunicipioId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", distritosMunicipales.MunicipioId);
             return View(distritosMunicipales);
         }
 
@@ -93,7 +98,7 @@ namespace FSVentasCoreAs.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("DistritoId,Nombre,MunicipioId")] DistritosMunicipales distritosMunicipales)
+        public async Task<IActionResult> Editar(int id, [Bind("DistritoId,Nombre,MunicipioId")] DistritosMunicipales distritosMunicipales)
         {
             if (id != distritosMunicipales.DistritoId)
             {
@@ -118,14 +123,14 @@ namespace FSVentasCoreAs.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index");
+                return RedirectToAction("Consulta");
             }
-            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "MunicipioId", distritosMunicipales.MunicipioId);
+            ViewData["MunicipioId"] = new SelectList(_context.Municipios, "MunicipioId", "Nombre", distritosMunicipales.MunicipioId);
             return View(distritosMunicipales);
         }
 
         // GET: DistritosMunicipales/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Eliminar(int? id)
         {
             if (id == null)
             {
@@ -144,14 +149,14 @@ namespace FSVentasCoreAs.Controllers
         }
 
         // POST: DistritosMunicipales/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Eliminar")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var distritosMunicipales = await _context.DistritosMunicipales.SingleOrDefaultAsync(m => m.DistritoId == id);
             _context.DistritosMunicipales.Remove(distritosMunicipales);
             await _context.SaveChangesAsync();
-            return RedirectToAction("Index");
+            return RedirectToAction("Consulta");
         }
 
         private bool DistritosMunicipalesExists(int id)

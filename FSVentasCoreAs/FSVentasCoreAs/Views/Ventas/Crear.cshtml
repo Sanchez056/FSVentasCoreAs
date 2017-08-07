@@ -1,0 +1,438 @@
+@model FSVentasCoreAs.Models.Ventas
+
+@{
+    ViewData["Title"] = "Crear";
+}
+
+<h2>Crear</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Ventas</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">VentaId:</span>
+                <input class="form-control input-group-lg col-2" type="text" id="tbId" placeholder="Id" />
+                <button type="button" class="btn btn-success col-sm-2" id="btnBuscar" onclick="Buscar()">Buscar</button>
+            </div>
+        </div>
+        <form id="form1">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon glyphicon glyphicon-calendar"> Fecha:</span>
+                    <input class="form-control input-group input" type="text" placeholder="Fecha" id="dpFecha" required readonly />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Cliente</span>
+                    <select class="form-control selected" id="ClienteList">
+                    <option value="0" disabled selected> </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon">Empleado</span>
+                    <select class="form-control selected" id="EmpleadoList">
+                     <option value="0" disabled selected> </option>
+                    </select>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">Articulos</span>
+            <select class="form-control selected" id="ArticuloList">
+                <option value="0" disabled selected> </option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="input-group">
+            <span class="input-group-addon">Precio</span>
+            <input class="form-control input-group-sm col-2" type="text" id="tbPrecio" placeholder="Precio" disabled />
+            <span class="input-group-addon">Cantidad</span>
+            <input class="form-control input-group-sm col-2" type="text" id="tbCantidad" placeholder="Cantidad" />
+            <span class="input-group-addon">Descuento   </span>
+            <input class="form-control input-group-sm col-2" type="text" id="tbDescuento" placeholder="Descuento" />
+            <button type="button" class="btn btn-success col-sm-2" id="btnAgregar" onclick="AgregarDetalle()">Agregar</button>
+        </div>
+    </div>
+    <div>
+        <div id="content">
+            <table id="tabla" class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ArticuloId</th>
+                        <th>Articulo</th>
+                        <th>Precio</th>
+                        <th>Cantidad</th>
+                        <th>Descuento</th>
+                        <th>SubTotal</th>
+                        <th>Opcion</th>
+                    </tr>
+                </thead>
+                <tbody id="tbBody"></tbody>
+            </table>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Total:</span>
+                <input class="form-control input-group-lg col-2" type="text" id="tbTotal" value="0" readonly />
+            </div>
+        </div>
+        <div class="form-group text-center col-xl-12">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="button" class="btn btn-danger col-sm-2" id="btnLimpiar" onclick="LimpiarCampos(0)">Nuevo</button>
+                <button type="button" class="btn btn-primary  col-sm-2" id="btnCrear" onclick=" ValidarFactura();">Crear</button>
+                <button type="button" class="btn btn-info col-sm-2" id="btnModificar" onclick="ArmarFactura(1)">Modificar</button>
+                <button type="button" class="btn btn-warning col-sm-2" id="btnEliminar" onclick="ArmarFactura(2)">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+}
+<div>
+    <a asp-action="Index">Back to List</a>
+    <font face="times new roman" size="6" color="black">
+        <p class="validateTips">Todos los campos son obligatorios</p>
+    </font>
+</div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        <script src="~/js/bootstrap-datepicker.min.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+        <script type="text/javascript" src="~/js/bootstrap-datepicker.min.js"></script>
+        <script src="~/js/moment.min.js"></script>
+        <script src="~/js/moment-with-locales.min.js"></script>
+        <script src="~/js/jquery-3.1.1.min.js"></script>
+        <script src="~/js/jquery-ui.js"></script>
+
+        <script type="text/javascript">
+
+            CargaDropDownList();
+            var cont = 0, Contenido = new Array(), factId = 0;
+            ///////////////Detalle/////////////////////
+            function ActualizarTabla() {
+                if ($('#tbBody tr').length > 0)
+                    $('#tbBody tr').remove();
+                var monto = 0; cont++;
+                $.each(Contenido, function (index, detail) {
+                    var fila = '<tr>';
+                    fila += '<td>' + (index + 1) + '</td>';
+                    fila += '<td>' + detail.ArticuloId + '</td>';
+                    fila += '<td>' + detail.Articulos + '</td>';
+                    fila += '<td>' + detail.Precio + '</td>';
+                    fila += '<td>' + detail.Cantidad + '</td>';
+                    fila += '<td>' + detail.Descuento + '</td>';
+                    fila += '<td>' + detail.SubTotal + '</td>';
+                    fila += '<td>' + '<input type="button" value="Delete" onclick="deleteRow(this)"/>' + '</td>';
+                    fila += '</tr>';
+                    $('#tabla').append(fila);
+                    monto += detail.SubTotal;
+                });
+                $('#tbTotal').val(monto);
+            }
+            function AgregarDetalle() {
+
+                var Id = $('#tbId').val();
+                var ArticuloId = $('#ArticuloList').find('option:selected').attr('id');
+                var Articulo = $('#ArticuloList').find('option:selected');
+                var Precio = $('#tbPrecio').val();
+                var Cantidad = $('#tbCantidad').val();
+                var Descuento = $('#tbDescuento').val();
+                var subTt = (parseInt(Cantidad) * parseFloat(Precio) - parseFloat(Descuento));
+                var detail = {
+                    Id: 0,
+                    VentaId: Id,
+                    ArticuloId: ArticuloId,
+                    Articulos: Articulo.text(),
+                    Precio: Precio,
+                    Cantidad: Cantidad,
+                    Descuento: Descuento,
+                    SubTotal: subTt
+                }
+                Contenido.push(detail);
+                ActualizarTabla();
+            }
+            ///////////Validaciones//////////////////////////////////
+            var CLIENTE = $('#ClienteList').find('option:selected'), ARTICULOS = $('#ArticuloList').find('option:selected'), EMPLEADOS = $('#EmpleadoList').find('option:selected'), FECHA = $("#dpFecha"), CANTIDAD = $("#dpCantidad"), allFields = $([]).add(CLIENTE).add(FECHA), tips = $(".validateTips");
+            function updateTips(t) {
+                tips
+                    .text(t)
+                    .addClass("ui-state-highlight");
+                setTimeout(function () {
+                    tips.removeClass("ui-state-highlight", 1500);
+                }, 500);
+            }
+            function checkLength(obj, name, min, max) {
+                if (obj.val().length > max || obj.val().length < min) {
+                    obj.addClass("ui-state-error");
+                    obj.focus();
+                    updateTips("La logitud del campo " + name + " debe estar entre " +
+                        min + " y " + max + ".");
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+            function checkRegexp(obj, regexp, msj) {
+                if (!(regexp.test(obj.val()))) {
+                    obj.addClass("ui-state-error");
+                    obj.focus();
+                    updateTips(msj);
+                    return false;
+                }
+                else {
+                    return true;
+                }
+            }
+            ///////////Metodos Limpiar y cargar///////////////////////
+            function CargaDropDownList() {
+                $.getJSON("/CargarVentas/ListaArticuloVentas",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.articuloId;
+                            var Precio = lista.precio;
+                            var Nombre = lista.nombre;
+                            var option = "<option id='" + Id + "'value='" + Precio + "'>" + Nombre + "</option>";
+                            $('#ArticuloList').append(option);
+                        });
+                    });
+                $.getJSON("/CargarVentas/ListaClientesVentas",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.clienteId;
+                            var Nombre = lista.nombre;
+                            var option = "<option id='" + Id + "'value='" + 0 + "'>" + Nombre + "</option>";
+                            $('#ClienteList').append(option);
+                        });
+
+                    });
+                $.getJSON("/CargarVentas/ListaEmpleadosVentas",
+                    {
+                        id: 1
+                    },
+                    function (lista) {
+                        $.each(lista, function (index, lista) {
+                            var Id = lista.empleadoId;
+                            var Nombre = lista.nombre;
+                            var option = "<option id='" + Id + "'value='" + 0 + "'>" + Nombre + "</option>";
+                            $('#EmpleadoList').append(option);
+
+                        });
+                    });
+            }
+            function LimpiarCampos(modo) {
+                $('#ClienteList').find('option').remove();
+                $('#EmpleadoList').find('option').remove();
+                $('#ArticuloList').find('option').remove();
+                CargaDropDownList();
+                $('#ClienteList').val($('#ClienteList > option:first').val());
+                $('#EmpleadoList').val($('#EmpleadoList > option:first').val());
+                $('#ArticuloList').val($('#ArticuloList > option:first').val());
+                $('#tbPrecio').val("");
+                $('#tbCantidad').val("");
+                $('#tbDescuento').val("");
+                $('#tbBody tr').remove();
+
+
+                cont = 0;
+                $('#tbTotal').val(0);
+                $('#tbDescuento').val(0);
+            }
+            Date.prototype.yyyymmdd = function () { var yyyy = this.getFullYear().toString(); var mm = (this.getMonth() + 1).toString(); var dd = this.getDate().toString(); return yyyy + "/" + (mm[1] ? mm : "0" + mm[0]) + "/" + (dd[1] ? dd : "0" + dd[0]); }; var date = new Date(); $('#dpFecha').val(date.yyyymmdd());
+            $("#ArticuloList").change(function () {
+                var Precio = $('#ArticuloList').find('option:selected').attr('value');
+                $('#tbPrecio').val(Precio);
+            })
+            function deleteRow(r) {
+                var i = r.parentNode.parentNode.rowIndex;
+                document.getElementById("tabla").deleteRow(i);
+                $('#ArticuloList').val($('#ArticuloList > option:first').val());
+                Contenido.splice(i - 1, 1);
+                ActualizarTabla();
+            }
+            $(document).ready(function () {
+                NextId();
+            });
+            function NextId() {
+                $.getJSON("/Ventas/LastIndex", function (id) {
+                    $('#tbId').val(id);
+                });
+            }
+            //////////Guardar Factura/////////////////////////////////
+            function ValidarFactura() {
+                var valid = true;
+                allFields.removeClass("ui-state-error");
+                updateTips("Todos los campos son obligatorios");
+                if (('#tbBody tr').length <= 0) {
+                    updateTips("Debe agregar algun Articulos al detalle");
+                }
+                valid = valid && checkLength(FECHA, "Fecha", 5, 20);
+                valid = valid && checkLength(CLIENTE, "Cliente", 1, 100);
+                valid = valid && checkLength(EMPLEADOS, "Empleado", 1, 100);
+                valid = valid && checkLength(ARTICULOS, "Articulo", 1, 100);
+                console.log(Contenido);
+                if (valid) {
+                    Crear();
+                }
+            }
+            function Crear() {
+                var ClienteListId = $('#ClienteList').find('option:selected').attr('id');
+                var ClienteList = $('#ClienteList').find('option:selected');
+                var EmpleadoList = $('#EmpleadoList').find('option:selected');
+                var Id = $('#tbId').val();
+                var total = $('#tbTotal').val();
+                var fecha = $('#dpFecha').val();
+
+                var Venta = {
+                    VentaId: 0,
+                    ClienteId: ClienteListId,
+                    Clientes: ClienteList.text(),
+                    Empleados: EmpleadoList.text(),
+                    Fecha: fecha,
+                    Total: total
+                }
+                var EncabezadoDetalle = {
+                    Encabezado: Venta,
+                    Detalle: Contenido
+                }
+                Enviar(EncabezadoDetalle);
+            }
+            function Enviar(data) {
+                $.ajax(
+                    {
+                        method: "POST",
+                        url: "/CargarVentas/GuardarVentas",
+                        data: data,
+                        success: function (id) {
+                            if (parseInt(id) > 0) {
+                                factId = id;
+                            }
+                        }
+                    });
+            };
+            ///////////Metodos/////////////////////////////////////////
+            function Buscar() {
+                Contenido.length = 0;var id = $('#tbId').val();
+                $.getJSON("/CargarVentas/Buscar",{ VentaId: id }, function (fac) {
+                        if (fac != null) {
+                            $('#dpFecha').val(fac.fecha);
+                            $('#ClienteList').find('option').remove();
+                            $('#EmpleadoList').find('option').remove();
+                            var option = "<option id='" + fac.clienteId + "'value='" + 1 + "'>" + fac.clientes + "</option>";
+                            $('#ClienteList').append(option);
+                            var optionE = "<option id='" +fac.empleadoId + "'value='" + 1 + "'>" + fac.empleados + "</option>";
+                            $('#EmpleadoList').append(optionE);
+
+                            $.getJSON("/VentasDetalles/BuscarF", { VentaId: id }, function (customer) {
+                                $.each(customer, function (index, customer) {
+
+                                    var pp = {
+                                        Id: customer.id,
+                                        VentaId: id,
+                                        ArticuloId: customer.articuloId,
+                                        Articulos: customer.articulos,
+                                        Precio: customer.precio,
+                                        Cantidad: customer.cantidad,
+                                        Descuento: customer.descuento,
+                                        SubTotal: customer.subTotal
+                                    }
+                                    Contenido.push(pp);
+                                    ActualizarTabla();
+                                });
+                            });
+                        }
+                        else if(fac== null){
+                            alert("La factura que ha solicitado al parecer no esta disponible o ha sido eliminada");
+
+                        }
+                    });
+            }
+            function ArmarFactura(motivo) {
+                var Id = $('#tbId').val();
+                var ClienteListId = $('#ClienteList').find('option:selected').attr('id');
+                var ClienteList = $('#ClienteList').find('option:selected');
+                var EmpleadoList = $('#EmpleadoList').find('option:selected');
+
+                var total = $('#tbTotal').val();
+                var fecha = $('#dpFecha').val();
+
+                var enca = {
+                    VentaId: Id,
+                    ClienteId: ClienteListId,
+                    Clientes: ClienteList.text(),
+                    Empleado: EmpleadoList.text(),
+                    Fecha: fecha,
+                    Total: total
+                }
+                var EncabezadoDetalle = {
+                    Encabezado: enca,
+                    Detalle: Contenido
+                }
+
+                if (motivo == 1) {
+                    ModificarFactura(EncabezadoDetalle);
+                }
+                else if (motivo == 2) {
+
+                    EliminarFactura(EncabezadoDetalle);
+                }
+            }
+            function ModificarFactura(EncabezadoDetalle) {
+                console.log(EncabezadoDetalle);
+                $.ajax({
+                    method: "POST",
+                    url: "/Ventas/Modificar",
+                    data: EncabezadoDetalle,
+                    success: function (res) {
+                        if (res != null) {
+                            Contenido.length = 0;
+
+
+                            alert("La factura ha sido modificada.");
+                            LimpiarCampos(0);
+                        } else {
+                            alert("No se a podido procesar su solicitud.");
+                        }
+                    },
+                    error: function (error) {
+                    }
+                });
+            }
+            function EliminarFactura(EncabezadoDetalle) {
+                $.ajax({
+                    method: "POST",
+                    url: "/Ventas/Eliminar",
+                    data: EncabezadoDetalle,
+                    success: function (res) {
+                        if (res != null) {
+                            alert("La factura ha sido eliminada correctamente.");
+                        }
+                        else {
+                            alert("No se ha podido procesar su solicitud.");
+                        }
+                        LimpiarCampos(0);
+                    }
+                })
+            }
+
+        </script>
+
+    }
+}
