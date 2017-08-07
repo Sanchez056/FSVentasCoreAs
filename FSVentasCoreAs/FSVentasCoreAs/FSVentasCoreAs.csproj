@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
@@ -229,6 +229,10 @@
     <Reference Include="System.Web.WebPages.Razor">
       <HintPath>..\..\..\..\AppData\Local\Syncfusion\ReportsSDK\Samples\ASP.NET MVC\ReportServerSample\bin\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Nuevo\" />
   </ItemGroup>
 
 </Project>
